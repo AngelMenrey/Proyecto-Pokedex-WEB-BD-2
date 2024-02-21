@@ -5,7 +5,6 @@ import CommentService from '../services/comment.service'
 const router = express.Router()
 const service = new CommentService()
 
-//Metodo GET
 router.get('/', async (req, res, next) => {
   try {
     const comments = await service.findAll()
@@ -14,7 +13,7 @@ router.get('/', async (req, res, next) => {
     next(error)
   }
 })
-//Metodo POST
+
 router.post('/', async (req, res) => {
   const comment: Comment = req.body
   const newComment = await service.create(comment)
