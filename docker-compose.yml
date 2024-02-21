@@ -5,4 +5,4 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - /pokedex-mongo-bd-web-2/
+      - ./data/db:/data/db
