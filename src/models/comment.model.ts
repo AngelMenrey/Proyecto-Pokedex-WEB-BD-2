@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { Comment, CommentModel } from '../types/comment.type'
+
 const Comments = new Schema<Comment, CommentModel>({
   title: {
     type: String,

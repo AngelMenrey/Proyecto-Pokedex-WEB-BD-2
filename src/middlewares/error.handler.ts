@@ -17,4 +17,5 @@ const boomErrorHandler = (error, _req, res, next) => {
   }
   next(error)
 }
+
 export { logErrors, errorHandler, boomErrorHandler }
