@@ -8,7 +8,7 @@ class TypePokemonService {
       const newTypePokemon = await TypesPokemons.create(typepokemon)
       return newTypePokemon
     } catch (error) {
-      console.log('No se guardo el tipo de pokemon', error)
+      console.log('Error al guardar el tipo de pokemon', error)
       throw boom.badImplementation('Error al guardar el tipo de pokemon')
     }
   }
@@ -21,7 +21,7 @@ class TypePokemonService {
       }
       return typespokemons
     } catch (error) {
-      console.log('Error al conectarse a la base de datos', error)
+      console.log('Error al buscar los tipos de pokemons', error)
       throw boom.badImplementation('Error al buscar los tipos de pokemons')
     }
   }
@@ -45,7 +45,7 @@ class TypePokemonService {
         typepokemon: typepokemon
       })
       if (!typespokemons || typespokemons.length === 0) {
-        throw boom.notFound(`No se encontro el tipo de pokemon ${typepokemon}`)
+        throw boom.notFound(`No se encontró el tipo de pokemon ${typepokemon}`)
       }
       return typespokemons
     } catch (error) {
@@ -53,7 +53,35 @@ class TypePokemonService {
         `Error al buscar el tipo de pokemon por su tipo ${typepokemon}`,
         error
       )
-      throw boom.notFound(`No se encontro el tipo de pokemon${typepokemon}`)
+      throw boom.notFound(`No se encontró el tipo de pokemon ${typepokemon}`)
+    }
+  }
+
+  async deleteById(id: string) {
+    try {
+      const typepokemon = await TypesPokemons.findByIdAndDelete(id)
+      if (!typepokemon) {
+        throw boom.notFound(`No se encontró un tipo de pokemon con id ${id}`)
+      }
+      return 'Se eliminó correctamente el tipo de pokemon'
+    } catch (error) {
+      console.error('Error al eliminar el tipo de pokemon por id', error)
+      throw boom.badImplementation('Error al eliminar el tipo de pokemon')
+    }
+  }
+
+  async deleteByTypePokemon(typepokemon: string) {
+    try {
+      const typePokemon = await TypesPokemons.findOneAndDelete({ typepokemon })
+      if (!typePokemon) {
+        throw boom.notFound(
+          `No se encontró un tipo de pokemon con el nombre ${typepokemon}`
+        )
+      }
+      return 'Se eliminó correctamente el tipo de pokemon'
+    } catch (error) {
+      console.error('Error al eliminar el tipo de pokemon por su nombre', error)
+      throw boom.badImplementation('Error al eliminar el tipo de pokemon')
     }
   }
 }

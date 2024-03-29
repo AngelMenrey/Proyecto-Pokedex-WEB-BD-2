@@ -71,4 +71,32 @@ router.post(
   }
 )
 
+router.delete(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  async (req: UserRequestType, res, next) => {
+    try {
+      const { id, name } = req.query
+      if (id) {
+        const message = await service.deleteById(id as string)
+        res.status(200).json({ message })
+      } else if (name) {
+        const message = await service.deleteByName(name as string)
+        res.status(200).json({ message })
+      } else {
+        throw boom.badRequest(
+          'Se requiere proporcionar un ID o un nombre para eliminar un pokemon'
+        )
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      if (error.isBoom) {
+        next(error)
+      } else {
+        next(boom.internal('Error interno del servidor'))
+      }
+    }
+  }
+)
+
 export default router

@@ -135,6 +135,32 @@ class PokemonService {
       )
     }
   }
+
+  async deleteById(id: string) {
+    try {
+      const pokemon = await Pokemons.findByIdAndDelete(id)
+      if (!pokemon) {
+        throw boom.notFound(`No se encontró un pokemon con id ${id}`)
+      }
+      return 'Se eliminó correctamente el pokemon'
+    } catch (error) {
+      console.error('Error al eliminar el pokemon por id', error)
+      throw boom.badImplementation('Error al eliminar el pokemon')
+    }
+  }
+
+  async deleteByName(name: string) {
+    try {
+      const pokemon = await Pokemons.findOneAndDelete({ name })
+      if (!pokemon) {
+        throw boom.notFound(`No se encontró un pokemon con nombre ${name}`)
+      }
+      return 'Se eliminó correctamente el pokemon'
+    } catch (error) {
+      console.error('Error al eliminar el pokemon por nombre', error)
+      throw boom.badImplementation('Error al eliminar el pokemon')
+    }
+  }
 }
 
 export default PokemonService
