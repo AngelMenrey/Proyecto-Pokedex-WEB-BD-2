@@ -36,6 +36,33 @@ router.get(
   }
 )
 
+router.get(
+  '/frontendconnectionexamplepokemontypes',
+  async (req: UserRequestType, res, next) => {
+    try {
+      if (req.query.typepokemon) {
+        const { typepokemon } = req.query
+        const typespokemons = await service.findByTypePokemon(
+          typepokemon as string
+        )
+        return res.status(200).json(typespokemons)
+      }
+
+      if (req.query.id) {
+        const { id } = req.query
+        const typepokemon = await service.findById(id as string)
+        return res.status(200).json(typepokemon)
+      }
+
+      const typespokemons = await service.findAll()
+      res.status(200).json(typespokemons)
+    } catch (error) {
+      console.error('Error:', error)
+      next(boom.boomify(error))
+    }
+  }
+)
+
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
